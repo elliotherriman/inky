@@ -93,11 +93,7 @@ exports.inkCompleter = {
         } else if( isCursorInLogic ) {
             const divertTargetSuggestions = getAllDivertTargetSuggestions(this.inkFiles);
             const variableSuggestions = getAllVariableSuggestions(this.inkFiles);
-            const vocabSuggestions = getAllVocabSuggestions(this.inkFiles);
-            suggestions = divertTargetSuggestions.concat(variableSuggestions).
-                    concat(vocabSuggestions);
-        } else {
-            suggestions = getAllVocabSuggestions(this.inkFiles);
+            suggestions = divertTargetSuggestions.concat(variableSuggestions);
         }
 
         callback(null, suggestions);
