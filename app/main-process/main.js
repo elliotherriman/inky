@@ -84,6 +84,9 @@ app.on('ready', function () {
         toggleTags: (item, focusedWindow, event) => {
             focusedWindow.webContents.send("set-tags-visible", item.checked);
         },
+        toggleEditor: (item, focusedWindow, event) => {
+            focusedWindow.webContents.send("toggle-editor", item.checked);
+        },        
         nextIssue: (item, focusedWindow) => {
             focusedWindow.webContents.send("next-issue");
         },

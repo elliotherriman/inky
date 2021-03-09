@@ -168,6 +168,12 @@ function setupMenus(callbacks) {
                     }
                 },
                 {
+                    label: 'Show Editor',
+                    type: "checkbox",
+                    checked: true,                    
+                    click: callbacks.toggleEditor
+                },                
+                {
                     label: 'Theme',
                     submenu: themes
                 },
@@ -184,7 +190,7 @@ function setupMenus(callbacks) {
                     label: "Zoom (Decrease) ",
                     accelerator: 'CmdOrCtrl+-',
                     click: callbacks.zoomOut
-                }
+                },
             ]
         },
         {

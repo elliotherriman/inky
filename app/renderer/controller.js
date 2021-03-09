@@ -306,7 +306,16 @@ ipc.on("set-tags-visible", (event, visible) => {
         $("#main").addClass("hideTags");
 });
 
-
+ipc.on("toggle-editor", (event, visible) => {
+    if( visible )
+    {
+        $(".window").removeClass("hideEditor");
+    }
+    else
+    {
+        $(".window").addClass("hideEditor");
+    }
+});
 
 function updateTheme(event, newTheme) {
 	if (newTheme && newTheme.toLowerCase() === 'dark') {

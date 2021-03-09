@@ -571,6 +571,32 @@ img.issue-icon.warning {
   opacity: 0;
 }
 
+.window.hideEditor #editor
+{
+	display: none !important;
+}
+.window.hideEditor .split
+{
+	display: none !important;
+}
+.window.hideEditor #player
+{
+	left: 0% !important;
+}
+.window.hideEditor .left
+{
+	display: none !important;
+}
+
+.window.hideEditor .sidebar
+{
+	display: none !important;
+}
+.window.hideEditor .twopane
+{
+	left: 0 !important;
+}
+
 #player {
   display: block;
   position: absolute;
