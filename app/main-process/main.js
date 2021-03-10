@@ -86,6 +86,10 @@ app.on('ready', function () {
         },
         toggleEditor: (item, focusedWindow, event) => {
             focusedWindow.webContents.send("toggle-editor", item.checked);
+        },
+        charTagger: () => {
+            var win = ProjectWindow.focused();
+            if (win) win.charTagger();
         },        
         nextIssue: (item, focusedWindow) => {
             focusedWindow.webContents.send("next-issue");
@@ -128,9 +132,9 @@ app.on('ready', function () {
             win.zoom(zoom_percent);
           }
         },
-        insertSnippet: (focussedWindow, snippet) => {
-            if( focussedWindow )
-                focussedWindow.webContents.send('insertSnippet', snippet);
+        insertSnippet: (focusedWindow, snippet) => {
+            if( focusedWindow )
+                focusedWindow.webContents.send('insertSnippet', snippet);
         },
         changeTheme: (newTheme) => {
           theme = newTheme;

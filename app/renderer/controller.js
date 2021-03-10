@@ -220,6 +220,53 @@ ipc.on("keyboard-shortcuts", (event, visible) => {
     alert(messageLines.join("\n"));
 });
 
+ipc.on("char-tagger", (event, visible) => {
+	console.log(EditorView);
+    let lines = EditorView.getValue().split("\n");
+    EditorView.saveCursorPos();
+    for (var i = 0; i < lines.length; i++)
+    {   
+        var line = lines[i].split("#ch-")[0].trim();
+        console.log(lines[i].split("#ch-"));
+
+    	if (line.match(/^\s*(?!({\s*$|{\s*\w*\s*:$|{not\s+\w+:|}\s*$|=|\/\/|\s*->|~|VAR|-.*:$|.*else:\s*$|-\s*$|-\s+[^<A-Za-z0-9]\s*-+\s*\(\w*\)\s*$)).*[A-Za-z0-9]+.*$/g))
+    	{
+    		if (line.startsWith("*"))
+            {
+                line += " #ch-pl";
+            }
+            else if (i && line.match(/^(-|\s|-+\s*\(\w+\))*<>/))
+            {
+                let j = 1;
+                while (i - j > 0 && lines[i-j].match(/^\s*(\/\/|#)/))
+                {   
+                    j -= 1;
+                }
+                if (lines[i-j].trim().startsWith("*"))
+                {
+                    line += " #ch-pl";
+                }
+                else if (lines[i-j].trim().startsWith("="))
+                {
+                    line += " #ch-ambig";                    
+                }
+                else
+                {
+                    line += " #ch-them";
+                }
+            }
+            else
+            {
+                line += " #ch-them";
+            }
+            lines[i] = line;
+    	}
+    };
+    
+	EditorView.setValue(lines.join("\n"));
+    EditorView.restoreCursorPos();    
+});
+
 
 EditorView.setEvents({
     "change": () => {

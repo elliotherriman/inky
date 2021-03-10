@@ -220,7 +220,11 @@ function setupMenus(callbacks) {
                         label: 'Word count and more',
                         enabled: callbacks.isFocusedWindow,
                         click: callbacks.stats
-                }
+                },
+                {
+                        label: 'Tag Characters',
+                        click: callbacks.charTagger
+                },
             ]
         },
         {
