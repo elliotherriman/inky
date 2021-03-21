@@ -96,6 +96,9 @@ ProjectWindow.prototype.keyboardShortcuts = function() {
     this.browserWindow.webContents.send('keyboard-shortcuts');
 }
 
+ProjectWindow.prototype.charTagger = function() {
+    this.browserWindow.webContents.send('char-tagger');
+}
 ProjectWindow.prototype.finalClose = function() {
     this.safeToClose = true;
     Inklecate.killSessions(this.browserWindow);

@@ -84,6 +84,10 @@ app.on('ready', function () {
         toggleTags: (item, focusedWindow, event) => {
             focusedWindow.webContents.send("set-tags-visible", item.checked);
         },
+        charTagger: () => {
+            var win = ProjectWindow.focused();
+            if (win) win.charTagger();
+        },        
         nextIssue: (item, focusedWindow) => {
             focusedWindow.webContents.send("next-issue");
         },
