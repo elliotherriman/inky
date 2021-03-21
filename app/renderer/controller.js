@@ -221,6 +221,68 @@ ipc.on("keyboard-shortcuts", (event, visible) => {
     alert(messageLines.join("\n"));
 });
 
+ipc.on("char-tagger", (event, selection) => {
+
+    EditorView.saveCursorPos();
+	
+	let lines;
+	
+	if (selection)
+	{
+	    lines = ace.edit("editor").getSelectedText().split("\n");	
+	}
+	else
+	{
+	    lines = ace.edit("editor").getValue().split("\n");	
+	}
+    for (var i = 0; i < lines.length; i++)
+    {   
+        lines[i] = lines[i].replace(/#ch-\S+/, "").trimEnd();
+        var line = lines[i].trim();
+
+    	if (line.match(/^\s*(?!({\s*$|{\s*\w*\s*:$|{not\s+\w+:|}\s*$|=|\/\/|\s*->|~|VAR|-.*:$|.*else:\s*$|-\s*$|-\s+[^<A-Za-z0-9]|\s*-+\s*\(\w*\)\s*$)).*[A-Za-z0-9]+.*$/g))
+    	{
+    		if (line.startsWith("*"))
+            {
+                lines[i] += " #ch-pl";
+            }
+            else if (i && line.match(/^(-|\s|-+\s*\(\w+\))*<>/))
+            {
+                let j = 1;
+                while (i - j > 0 && lines[i-j].match(/^\s*(\/\/|#|-+\s*\(\w*\))\s*$/))
+                {   
+                    j -= 1;
+                }
+                if (lines[i-j].trim().startsWith("*"))
+                {
+                    lines[i] += " #ch-pl";
+                }
+                else if (lines[i-j].trim().startsWith("="))
+                {
+                    lines[i] += " #ch-ambig";                    
+                }
+                else
+                {
+                    lines[i] += " #ch-them";
+                }
+            }
+            else
+            {
+                lines[i] += " #ch-them";
+            }
+    	}
+    };
+    
+	if (selection) 
+	{
+		ace.edit("editor").session.replace(ace.edit("editor").selection.getRange(), lines.join("\n"));	
+	}
+	else
+	{
+		ace.edit("editor").setValue(lines.join("\n"));
+	}
+    EditorView.restoreCursorPos();
+});
 
 EditorView.setEvents({
     "change": () => {
