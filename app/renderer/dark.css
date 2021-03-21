@@ -135,7 +135,7 @@
 }
 
 .window.dark #main.hideTags .ace_editor span.ace_tag {
-    color: #282828;
+    color: #aaa;
 }
 
 .window.dark ::-webkit-scrollbar {
@@ -150,4 +150,51 @@
 
 .window.dark .sidebar .nav-wrapper::-webkit-scrollbar-thumb {
     background: #323232;
+}
+
+.window.dark #toolbar .issue-popup {
+    background: #282828;
+}
+
+.window.dark #toolbar .issue-popup .table {
+    overflow-x: hidden;
+}
+
+
+.window.dark  #toolbar .issue-popup .table .row:hover {
+	background: #282828;
+}
+
+.window.dark  #toolbar .issue-popup .table .row .line-no {
+	color: #f9f9f9;
+	background: none;
+	border-right: none;
+}
+
+.window.dark #goto-anything
+{
+	background: #282828;
+	color: #f9f9f9;
+	box-shadow: none;
+}
+
+.window.dark #goto-anything input
+{
+	background: #282828;
+	color: #f9f9f9;
+}
+
+.window.dark #goto-anything ul.results li.content
+{
+	color: #f9f9f9;
+}
+
+.window.dark #goto-anything ul.results li.selected
+{
+	background: #444;
+}
+
+.window.dark .goto-highlight
+{
+	color: #6eb4f7;
 }
