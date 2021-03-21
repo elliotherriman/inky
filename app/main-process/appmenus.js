@@ -6,10 +6,14 @@ const _ = require("lodash");
 const Menu = electron.Menu;
 const ProjectWindow = require("./projectWindow.js").ProjectWindow;
 const inkSnippets = require("./inkSnippets.js").snippets;
+const shell = require('electron').shell;
+const path = require('path');
+// const extensions = require("../extensions/appMenu.js").snippets;
+
 
 function setupMenus(callbacks) {
     let themes = [];
-    const defaultTheme = 'light';
+    const defaultTheme = 'dark';
     for (const theme of ['light', 'dark']) {
         themes.push({
             label: theme.substring(0, 1).toUpperCase() + theme.substring(1),
