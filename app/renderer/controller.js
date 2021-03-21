@@ -368,3 +368,16 @@ ipc.on("zoom", (event, amount) => {
 ipc.on("insertSnippet", (event, snippetContent) => {
     EditorView.insert(snippetContent);
 });
+
+ipc.on("reload-css", (event) => {
+    document.getElementById("customcss").href += "";
+});
+
+ipc.on("reload-js", (event) => {
+	var src = "../extensions/externalFunctions.js";
+	src = $('script[src$="' + src + '"]').attr("src");
+    $('script[src$="' + src + '"]').remove();
+    $('<script/>').attr('src', src).appendTo('html');
+	PlayerView.bindExternalFunctions();
+	PlayerView.restart();
+});

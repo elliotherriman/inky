@@ -65,11 +65,13 @@ function updateIssueSummary(issues, issueClickCallback) {
                             <span class="icon icon-right-open-big"></span>
                           </div>`);
 
-        $issueRow.click((e) => {
-            events.selectIssue(issue);
-            e.preventDefault();
-        });
-
+        if (issue.lineNumber)
+        {
+            $issueRow.click((e) => {
+                events.selectIssue(issue);
+                e.preventDefault();
+            });
+        }
         $issuesTable.append($issueRow);
     });
 
