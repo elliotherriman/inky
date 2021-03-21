@@ -1,4 +1,5 @@
 cd "`dirname "$0"`"
+cd ..
 
 # Uses: https://github.com/electron-userland/electron-packager
 # To install it globally:
