@@ -98,6 +98,7 @@ function reloadInklecateSession() {
 
     var instr = buildCompileInstruction();
     instr.play = true;
+    instr.externalFunctions = true;
 
     events.resetting(instr.sessionId);
 
@@ -303,6 +304,23 @@ ipc.on("play-requires-input", (event, fromSessionId) => {
     });
 });
 
+ipc.on("play-requires-external-function", (event, name, args, fromSessionId) => {
+    if( fromSessionId != currentPlaySessionId )
+        return;
+
+    // May have finished compiling
+    updateCompilerIsBusy(false);
+
+    if (typeof window[name] === "function") 
+    {
+        ipc.send("play-continue-with-external-function", window[name].apply(this, args), fromSessionId);
+    }
+    else
+    {
+        events.errorsAdded([{type: "ERROR", message: `External function "${name}" not found.`, lineNumber:""}]);
+        ipc.send("play-stop-ink", fromSessionId)
+    }
+});
 ipc.on("inklecate-complete", (event, fromSessionId, exportJsonPath) => {
 
     if( fromSessionId == currentPlaySessionId ) {

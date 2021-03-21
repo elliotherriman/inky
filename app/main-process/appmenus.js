@@ -227,7 +227,59 @@ function setupMenus(callbacks) {
                 // Filled in by the code at the bottom from the content in inkSnippets.js
             ]
         },
-        
+        {
+        	label: 'Extensions',
+        	submenu: 
+        	[
+        		{
+					label: 'Custom CSS',
+					submenu: [
+
+						{
+							label: 'Open Custom CSS',
+							click: () => {
+								shell.openItem(path.join(__dirname, '../extensions/custom.css'));
+							}
+						},                      	
+						{
+							label: 'Reload Custom CSS',
+							click: () => {
+								ProjectWindow.all().forEach(window => {
+									window.browserWindow.webContents.send('reload-css');
+								});
+							}
+						},
+					],
+				},
+        		{
+					label: 'External Functions',
+					submenu: [
+						{
+							label: 'Open External Functions',
+							click: () => {
+								shell.openItem(path.join(__dirname, '../extensions/externalFunctions.js'));
+							}
+						},                      
+						{
+							label: 'Reload External Functions',
+							click: () => {
+								ProjectWindow.all().forEach(window => {
+									window.browserWindow.webContents.send('reload-js');
+								});
+							}							
+						}, 
+					]
+				},
+				{
+					type: 'separator'
+				},                
+				{
+						label: 'Tag Characters',
+						click: callbacks.charTagger
+				},     
+				                             
+        	]
+        },
         {
             label: 'Window',
             role: 'window',

@@ -70,6 +70,10 @@ function compile(compileInstruction, requester) {
 
     if( compileInstruction.play )
         inklecateOptions[0] += "p";
+    if (compileInstruction.externalFunctions)
+    {
+        inklecateOptions.push("-e");
+    }
 
     var jsonExportPath = null;
     if( compileInstruction.export )  {
@@ -246,6 +250,10 @@ function compile(compileInstruction, requester) {
                     requester.send('play-generated-text', jsonResponse.text, sessionId);
                 }
                 
+                else if ( jsonResponse["external-function"] !== undefined ) 
+                {
+                    requester.send("play-requires-external-function",  jsonResponse['external-function'],  jsonResponse.arguments, sessionId);
+                }
                 // End of story, but keep process running for debug source lookups
                 else if( jsonResponse.end ) {
                     onEndOfStory();
@@ -419,6 +427,13 @@ ipc.on("get-runtime-path-in-source", (event, runtimePath, sessionId) => {
 });
 
 
+ipc.on("play-continue-with-external-function", (event, result, sessionId) => {
+    if( sessions[sessionId] ) {
+        const playProcess = sessions[sessionId].process;
+        if( playProcess )
+            playProcess.stdin.write(""+result+"\n");
+    }
+});
 
 exports.Inklecate = {
     killSessions: killSessions
