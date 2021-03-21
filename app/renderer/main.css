@@ -512,6 +512,7 @@ img.issue-icon.warning {
 #editor .ace-error {
   background: #ffd1d1;
   position:absolute;
+  display: none;
 }
 
 #editor .ace_gutter-cell.ace_error {
@@ -524,6 +525,7 @@ img.issue-icon.warning {
 #editor .ace-warning {
   background: #f2ad2b;
   position:absolute;
+  display: none;
 }
 
 #editor .ace-todo {     /* issue from compiler */
