@@ -285,7 +285,8 @@ ipc.on("char-tagger", (event, selection) => {
 
 EditorView.setEvents({
     "change": () => {
-        LiveCompiler.setEdited();
+        if (InkProject.currentProject.activeInkFile.relPath.split(".").pop() == "ink")    
+			LiveCompiler.setEdited();
     },
     "jumpToSymbol": (symbolName, contextPos) => {
         var foundSymbol = InkProject.currentProject.findSymbol(symbolName, contextPos);

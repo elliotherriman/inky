@@ -19,6 +19,7 @@ $(document).ready(() => {
         $grip.mousedown(function() {
             isDragging = true;
             event.preventDefault();
+            $right.css('pointer-events', 'none');
         });
         $(document).mousemove(function(event) {
             if( isDragging ) {
@@ -37,6 +38,7 @@ $(document).ready(() => {
 
                 $left.css({"right": fromRight, "width": fromLeft});
                 $right.css({"left": fromLeft, "width": fromRight});
+
                 $split.css("left", fromLeft);
 
                 // Hack... not sure of a better way to do this
@@ -49,6 +51,7 @@ $(document).ready(() => {
         });
         $(document).mouseup(function() {
             isDragging = false;
+			$right.css('pointer-events', 'auto');
             event.preventDefault();
         });
 

@@ -31,6 +31,66 @@ function ProjectWindow(filePath) {
         e => e.checked
     ).label.toLowerCase();
 
+	var html = __dirname + "/inkyjs/index.html";
+	var css = __dirname + "/inkyjs/style.css";
+	var functions = __dirname + "/inkyjs/functions.js";
+	var bridge = __dirname + "/inkyjs/bridge.js";
+
+	var twitsy = () => Menu.getApplicationMenu().items.find(
+        e => e.label.toLowerCase() === 'file'
+    ).submenu.items.find(
+        e => e.label.toLowerCase() === 'open recent'
+    ).submenu.items[0].label.toLowerCase();
+
+	// if no path provided, open the most recent doc
+	if (!filePath) 
+	{
+		try
+		{
+			filePath = Menu.getApplicationMenu().items.find(
+				e => e.label.toLowerCase() === 'file'
+			).submenu.items.find(
+				e => e.label.toLowerCase() === 'open recent'
+			).submenu.items[0].label.toLowerCase();
+		} catch (e) { }
+	}
+	
+	console.log(filePath);
+	if (filePath && filePath.includes(".project"))
+	{
+		try
+		{
+			var dir = filePath.match(/(.*)[\/\\]/)[1]+"/"||'';
+			console.log(dir);
+			fs.readFile(filePath, 'utf8', function (err, contents)
+			{
+				if (err) return console.log(err);
+				console.log(contents);
+				var project = JSON.parse(contents);
+				console.log(project);
+				console.log(project.ink);
+				if (project.ink) 
+				{
+					filePath = dir + project.ink;
+				}
+				else return;
+		
+				if (project.html && project.bridge) 
+				{
+					html = dir + project.html;
+					bridge = dir + project.bridge;
+				}
+				if (project.css) 
+				{
+					css = dir + project.css;
+				}
+				if (project.functions) 
+				{
+					functions = dir + project.functions;
+				}
+			});
+		}  catch (e) { } 
+	}
     this.browserWindow = new BrowserWindow(electronWindowOptions);
     this.browserWindow.loadURL("file://" + __dirname + "/../renderer/index.html");
     this.browserWindow.setSheetOffset(49);
@@ -41,6 +101,7 @@ function ProjectWindow(filePath) {
         this.browserWindow.webContents.on('dom-ready', () => {
             this.browserWindow.setRepresentedFilename(filePath);
             this.browserWindow.webContents.send('set-project-main-ink-filepath', filePath);
+//             console.log(this.browserWindow.webContents);
         });
     }
 
@@ -176,7 +237,7 @@ ProjectWindow.open = function(filePath) {
             title: "Open main ink file",
             properties: ['openFile'],
             filters: [
-                { name: 'Ink files', extensions: ['ink'] }
+                { name: 'Ink files', extensions: ['ink', "project"] }
             ]
         });
 
