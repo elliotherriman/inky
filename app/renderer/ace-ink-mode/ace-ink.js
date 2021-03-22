@@ -81,6 +81,8 @@ var inkHighlightRules = function() {
                 }]
             }, {
                 include: "#mixedContent"
+			}, {
+                include: "#choice"
             }, {
                 defaultToken: "choice"
             }]

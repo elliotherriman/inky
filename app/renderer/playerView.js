@@ -18,12 +18,12 @@ function fadeIn($jqueryElement)
 
 function contentReady()
 {
-
+	player.onReplayFinished();
 }
 
 function prepareForNewPlaythrough(sessionId) 
 {
-
+	player.onStoryRestart();
 }
 
 function addTextSection(text)
