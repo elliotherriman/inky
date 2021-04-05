@@ -80,6 +80,8 @@ var inkHighlightRules = function() {
                     defaultToken: "choice.weaveInsideBrackets" 
                 }]
             }, {
+                include: "#choice"
+            }, {
                 include: "#mixedContent"
             }, {
                 defaultToken: "choice"
@@ -210,6 +212,8 @@ var inkHighlightRules = function() {
                 regex: /$/,
                 token: "gather",
                 next: "pop"
+            }, {
+                include: "#escapes"
             }, {
                 include: "#gather"
             }, {
