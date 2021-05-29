@@ -2,6 +2,14 @@ body {
   padding: 0;
   margin: 0;
   overflow: hidden;
+  opacity: 0;
+}
+
+.window[class="window"] *
+{
+	background-color: transparent !important;
+	background: transparent !important;
+	opacity: 0 !important;
 }
 
 div {

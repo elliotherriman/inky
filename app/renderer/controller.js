@@ -382,6 +382,7 @@ function updateTheme(event, newTheme) {
         $(".window").removeClass(theme);
     }
 	LiveCompiler.setEdited();
+	$("body").css("opacity", "1");
 }
 
 updateTheme(null, window.localStorage.getItem("theme"));
