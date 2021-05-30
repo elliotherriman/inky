@@ -8,6 +8,7 @@ const AboutWindow = require("./aboutWindow.js").AboutWindow;
 const appmenus = require('./appmenus.js');
 const forceQuitDetect = require('./forceQuitDetect');
 const Inklecate = require("./inklecate.js").Inklecate;
+const extensions = require("./extensions");
 
 function inkJSNeedsUpdating() {
     return false;
@@ -52,26 +53,28 @@ app.on('ready', function () {
         }
     });
 
-    setupMenus();
+	extensions.load();
 
-    let openedSpecificFile = false;
-    if (process.platform == "win32" && process.argv.length > 1) {
-        for (let i = 1; i < process.argv.length; i++) {
-            var arg = process.argv[i].toLowerCase();
-            if (arg.endsWith(".ink")) {
-                var fileToOpen = process.argv[1];
-                ProjectWindow.open(fileToOpen);
-                openedSpecificFile = true;
-                break;
-            }
-        }
-    }
-    if (!openedSpecificFile) {
-        var w = ProjectWindow.createEmpty();
-    }
+	setupMenus();
 
-    // Debug
-    //w.openDevTools();
+	let openedSpecificFile = false;
+	if (process.platform == "win32" && process.argv.length > 1) {
+		for (let i = 1; i < process.argv.length; i++) {
+			var arg = process.argv[i].toLowerCase();
+			if (arg.endsWith(".ink")) {
+				var fileToOpen = process.argv[1];
+				ProjectWindow.open(fileToOpen);
+				openedSpecificFile = true;
+				break;
+			}
+		}
+	}
+	if (!openedSpecificFile) {
+		var w = ProjectWindow.createEmpty();
+	}
+	
+	// Debug
+	//w.openDevTools();
 });
 
 function finalQuit() {

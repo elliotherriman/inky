@@ -1,33 +1,48 @@
-const i18n = require('./i18n/i18n.js');
+const electron = require('electron');
+const ipc = electron.ipcMain;
+const fs = require("fs");
+const path = require("path");
 
-let extensions = [];
+var rendererExtensions = [];
 
-function add(modifier)
+function load()
 {
-	extensions.push(modifier);
-}
+	let folder = path.join(__dirname, '../extensions/');
 
-function build(template, callbacks, context)
-{
-	if (!extensions.length) return;
-
-	let index = template.map((i) => { return i.label; })
-						.indexOf(i18n._('Window'));
-
-	let extensionsMenu = {
-		label: 'Extensions',
-		submenu: []
+	if(!fs.existsSync(folder)) {
+		resolve();
 	}
+	
+	let contents = fs.readdirSync(folder);
 
-	for (var inject of extensions)
+	contents.forEach(item => 
 	{
-		inject(template, extensionsMenu.submenu, callbacks, context);
-		extensionsMenu.submenu.push({
-			type: 'separator'
-		});
-	}
+		if (!path.extname(item))
+		{
+			if (fs.existsSync(folder + item + "/extension.json"))
+			{
+				let root = folder + item + "/";
 
-	template.splice(index, 0, extensionsMenu);
+				let extension = JSON.parse(fs.readFileSync(root + "extension.json"))
+
+				if (extension.main && fs.existsSync(root + extension.main))
+				{
+					require('../extensions/' + item + "/" + extension.main);
+				}
+
+				if (extension.renderer && fs.existsSync(root + extension.renderer))
+				{
+					rendererExtensions.push(root + extension.renderer);
+				}					
+			}
+		}
+	});
 }
 
-exports.menu = {build: build, add: add};
+ipc.on("get-renderer-extensions", (event) =>
+{
+	console.log(rendererExtensions)
+	event.returnValue = rendererExtensions;
+});
+
+exports.load = load;

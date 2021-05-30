@@ -55,6 +55,11 @@ InkProject.setEvents({
 // Wait for DOM to be ready before kicking most stuff off
 // (some of the views get confused otherwise)
 $(document).ready(() => {
+
+	ipc.sendSync("get-renderer-extensions").forEach(file => {
+		require(file);
+	});
+
 	ipc.send("update-menus", "editor");
 
     if( InkProject.currentProject == null ) {
