@@ -12,7 +12,7 @@ const shell = require('electron').shell;
 const path = require('path');
 // const extensions = require("../extensions/appMenu.js").snippets;
 
-function setupMenus(callbacks) {
+function setupMenus(callbacks, context) {
     let themes = [];
     const defaultTheme = 'dark';
     for (const theme of ['light', 'dark', 'contrast', 'focus']) {
@@ -82,7 +82,7 @@ function setupMenus(callbacks) {
         });
     }
 
-    const template = [
+    let template = [
         {
             label: i18n._('File'),
             submenu: [
@@ -224,8 +224,12 @@ function setupMenus(callbacks) {
                     click: callbacks.zoomOut
                 }
             ]
-        },
-        {
+        }
+	]
+
+	if (context === "editor")
+	{
+        template.push({
             label: i18n._('Story'),
             submenu: [
                 {
@@ -258,7 +262,10 @@ function setupMenus(callbacks) {
         {
             label: i18n._('Ink'),
             submenu: inkSubMenu
-        },
+        });
+	}
+
+	template.push(
         {
             label: i18n._('Window'),
             role: 'window',
@@ -314,7 +321,7 @@ function setupMenus(callbacks) {
                 },
             ]
         },
-    ];
+	);
 
     const name = app.getName();
     const aboutWindowLabel = i18n._('About ') + name;
@@ -386,7 +393,7 @@ function setupMenus(callbacks) {
         );
     }
 
-	extensions.build(template, callbacks)
+	extensions.build(template, callbacks, context)
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);

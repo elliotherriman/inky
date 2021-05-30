@@ -52,7 +52,39 @@ app.on('ready', function () {
         }
     });
 
-    appmenus.setupMenus({
+    setupMenus();
+
+    let openedSpecificFile = false;
+    if (process.platform == "win32" && process.argv.length > 1) {
+        for (let i = 1; i < process.argv.length; i++) {
+            var arg = process.argv[i].toLowerCase();
+            if (arg.endsWith(".ink")) {
+                var fileToOpen = process.argv[1];
+                ProjectWindow.open(fileToOpen);
+                openedSpecificFile = true;
+                break;
+            }
+        }
+    }
+    if (!openedSpecificFile) {
+        var w = ProjectWindow.createEmpty();
+    }
+
+    // Debug
+    //w.openDevTools();
+});
+
+function finalQuit() {
+    Inklecate.killSessions();
+}
+
+forceQuitDetect.onForceQuit(finalQuit);
+electron.app.on("will-quit", finalQuit);
+
+
+function setupMenus(context)
+{
+	appmenus.setupMenus({
         new: () => {
             ProjectWindow.createEmpty();
         },
@@ -138,31 +170,10 @@ app.on('ready', function () {
           AboutWindow.changeTheme(newTheme);
           DocumentationWindow.changeTheme(newTheme);
         }
-    });
-
-    let openedSpecificFile = false;
-    if (process.platform == "win32" && process.argv.length > 1) {
-        for (let i = 1; i < process.argv.length; i++) {
-            var arg = process.argv[i].toLowerCase();
-            if (arg.endsWith(".ink")) {
-                var fileToOpen = process.argv[1];
-                ProjectWindow.open(fileToOpen);
-                openedSpecificFile = true;
-                break;
-            }
-        }
-    }
-    if (!openedSpecificFile) {
-        var w = ProjectWindow.createEmpty();
-    }
-
-    // Debug
-    //w.openDevTools();
-});
-
-function finalQuit() {
-    Inklecate.killSessions();
+    }, context);
 }
 
-forceQuitDetect.onForceQuit(finalQuit);
-electron.app.on("will-quit", finalQuit);
+ipc.on("update-menus", (event, context) =>
+{
+	setupMenus(context);
+});

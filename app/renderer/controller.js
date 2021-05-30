@@ -9,7 +9,6 @@ const loadTestInk = false;
 // remote.getCurrentWindow().webContents.openDevTools();
 
 // Helpers in global objects and namespace
-
 require("./util.js");
 require("./split.js");
 
@@ -56,6 +55,8 @@ InkProject.setEvents({
 // Wait for DOM to be ready before kicking most stuff off
 // (some of the views get confused otherwise)
 $(document).ready(() => {
+	ipc.send("update-menus", "editor");
+
     if( InkProject.currentProject == null ) {
         InkProject.startNew();
 
