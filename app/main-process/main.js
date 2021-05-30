@@ -71,10 +71,10 @@ app.on('ready', function () {
 	}
 	if (!openedSpecificFile) {
 		var w = ProjectWindow.createEmpty();
+		// Debug
+		//w.openDevTools();
 	}
 	
-	// Debug
-	//w.openDevTools();
 });
 
 function finalQuit() {
