@@ -7,6 +7,7 @@ const Menu = electron.Menu;
 const ProjectWindow = require("./projectWindow.js").ProjectWindow;
 const inkSnippets = require("./inkSnippets.js").snippets;
 const i18n = require('./i18n/i18n.js');
+const extensions = require("./extensions.js").menu;
 const shell = require('electron').shell;
 const path = require('path');
 // const extensions = require("../extensions/appMenu.js").snippets;
@@ -259,59 +260,6 @@ function setupMenus(callbacks) {
             submenu: inkSubMenu
         },
         {
-        	label: 'Extensions',
-        	submenu: 
-        	[
-        		{
-					label: 'Custom CSS',
-					submenu: [
-
-						{
-							label: 'Open Custom CSS',
-							click: () => {
-								shell.openItem(path.join(__dirname, '../extensions/custom.css'));
-							}
-						},                      	
-						{
-							label: 'Reload Custom CSS',
-							click: () => {
-								ProjectWindow.all().forEach(window => {
-									window.browserWindow.webContents.send('reload-css');
-								});
-							}
-						},
-					],
-				},
-        		{
-					label: 'External Functions',
-					submenu: [
-						{
-							label: 'Open External Functions',
-							click: () => {
-								shell.openItem(path.join(__dirname, '../extensions/externalFunctions.js'));
-							}
-						},                      
-						{
-							label: 'Reload External Functions',
-							click: () => {
-								ProjectWindow.all().forEach(window => {
-									window.browserWindow.webContents.send('reload-js');
-								});
-							}							
-						}, 
-					]
-				},
-				{
-					type: 'separator'
-				},                
-				{
-						label: 'Tag Characters',
-						click: callbacks.charTagger
-				},     
-				                             
-        	]
-        },
-        {
             label: i18n._('Window'),
             role: 'window',
             submenu: [
@@ -437,6 +385,8 @@ function setupMenus(callbacks) {
             }
         );
     }
+
+	extensions.build(template, callbacks)
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
