@@ -1,0 +1,8 @@
+{
+	"name": "Custom CSS",
+	"description": "Style Inky using custom CSS.",
+	"author": "Elliot Herriman",
+	"version": "1.0.0",
+	"main": "main.js",
+	"renderer": "renderer.js"
+}
