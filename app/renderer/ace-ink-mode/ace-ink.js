@@ -52,7 +52,7 @@ var inkHighlightRules = function() {
             ]
         }],
         "#choice": [{
-            regex: /(\s*)((?:[\*\+]\s?)+)(\s*)(?:(\(\s*)(\w+)(\s*\)))?/,
+            regex: /^(\s*)((?:[\*\+]\s?)+)(\s*)(?:(\(\s*)(\w+)(\s*\)))?/,
             token: [
                 "choice",                           // whitespace
                 "choice.bullets",                   // * or +
@@ -82,7 +82,11 @@ var inkHighlightRules = function() {
             }, {
                 include: "#choice"
             }, {
+                include: "#gather"
+            }, {
                 include: "#mixedContent"
+            }, {
+                include: "#comments"
             }, {
                 defaultToken: "choice"
             }]
