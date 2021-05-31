@@ -71,7 +71,6 @@ app.on('ready', function () {
 	}
 	if (!openedSpecificFile) {
 		var w = ProjectWindow.createEmpty();
-		// Debug
 		//w.openDevTools();
 	}
 	
@@ -119,10 +118,6 @@ function setupMenus(context)
         toggleTags: (item, focusedWindow, event) => {
             focusedWindow.webContents.send("set-tags-visible", item.checked);
         },
-        charTagger: () => {
-            var win = ProjectWindow.focused();
-            if (win) win.charTagger();
-        },        
         nextIssue: (item, focusedWindow) => {
             focusedWindow.webContents.send("next-issue");
         },
