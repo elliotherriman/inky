@@ -1,7 +1,7 @@
 const {remote} = require('electron')
 const {Menu, MenuItem} = remote
 
-const menu = Menu.buildFromTemplate([
+var template = [
 	{
 		role: "cut"
 	},
@@ -10,24 +10,20 @@ const menu = Menu.buildFromTemplate([
 	},
 	{
 		role: "paste"
-	},
-	{
-		label: "Tag Characters",
-		click(item, window, ev)
-		{
-			window.webContents.send("char-tagger", false)
-		}
-	},	
-	{
-		label: "Tag Selection",
-		click: function(item, window, ev)
-		{
-			window.webContents.send("char-tagger", true)
-		}		
-	}			
-]);
+	}
+];
+
+var menu = Menu.buildFromTemplate(template);
+
+function modify(inject)
+{
+	inject(template);
+	menu = Menu.buildFromTemplate(template);
+}
 
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
     menu.popup(remote.getCurrentWindow())
 }, false);
+
+exports.modify = modify;
