@@ -83,11 +83,11 @@ function compile(compileInstruction, requester) {
     inklecateOptions.push(mainInkPath);
 
     var inklecatePathToUse = inklecatePath;
-    if( compileInstruction.inkJsCompatible ) {
-        var inklecateName = path.basename(inklecatePath);
-        var inklecateFolderName = path.dirname(inklecatePath);
-        inklecatePathToUse = path.resolve(inklecateFolderName, "inkjs-compatible", inklecateName);
-    }
+    // if( compileInstruction.inkJsCompatible ) {
+    //     var inklecateName = path.basename(inklecatePath);
+    //     var inklecateFolderName = path.dirname(inklecatePath);
+    //     inklecatePathToUse = path.resolve(inklecateFolderName, "inkjs-compatible", inklecateName);
+    // }
 
     const playProcess = spawn(inklecatePathToUse, inklecateOptions, {
         "cwd": path.dirname(inklecatePathToUse),
