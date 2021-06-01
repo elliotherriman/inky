@@ -1,0 +1,8 @@
+{
+	"name": "Escape characters",
+	"description": "Escape all characters that Ink might compile.",
+	"author": "Elliot Herriman",
+	"version": "1.0.0",
+	"main": "main.js",
+	"renderer": "renderer.js"
+}
