@@ -37,7 +37,7 @@ const rewindPast = [
 	"comment.block.documentation.json",
 ]
 
-ipc.on("char-tagger", (event, selection) => 
+ipc.on("dialogue-tagger", (event, selection) => 
 {
     EditorView.saveCursorPos();
 	
@@ -57,7 +57,7 @@ ipc.on("char-tagger", (event, selection) =>
 		var end = range.end.row;
 	}
 
-	var lines = [];
+	var lines = ace.edit("editor").getValue().split("\n");	
 
     for (var i = start; i < end; i++)
     {   		
@@ -101,32 +101,32 @@ ipc.on("char-tagger", (event, selection) =>
 		lines[i] = tokens.map((token) => token.value).join("");
     };
 
-	if (selection)
-	{
-		ace.edit("editor").session.replace(ace.edit("editor").selection.getRange(), lines.join("\n"));	
-	}
-	else
-	{
-		ace.edit("editor").setValue(lines.join("\n"));
-	}
-    EditorView.restoreCursorPos();
+	ace.edit("editor").setValue(lines.join("\n"));
+
+	EditorView.restoreCursorPos();
 });
 
 ContextMenu.modify((template) => {
 	template.push(
 		{
-			label: "Tag Characters",
-			click(item, window)
+			label: "Tag Dialogue",
+			submenu:
+			[
 			{
-				window.webContents.send("char-tagger", false)
-			}
-		},	
-		{
-			label: "Tag Selection",
-			click: function(item, window)
+				label: "Tag Everything",
+				click(item, window)
+				{
+					window.webContents.send("char-tagger", false)
+				}
+			},	
 			{
-				window.webContents.send("char-tagger", true)
-			}		
-		}		
+				label: "Tag Selection",
+				click: function(item, window)
+				{
+					window.webContents.send("char-tagger", true)
+				}		
+			}				
+			]
+		}
 	);
 });

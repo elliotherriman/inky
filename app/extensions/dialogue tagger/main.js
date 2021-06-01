@@ -5,12 +5,12 @@ menu.modify(
 	{
 		extensionsMenu.push(
 			{       
-				label: 'Tag Characters',
+				label: 'Tag Dialogue',
 				click: (item, focusedWindow) =>
 				{
 					if (focusedWindow)
 					{
-						focusedWindow.webContents.send("char-tagger");
+						focusedWindow.webContents.send("dialogue-tagger");
 					}
 				},
 			});

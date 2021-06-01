@@ -1,0 +1,8 @@
+{
+	"name": "Dialogue tagger",
+	"description": "Insert a tag after every choice, and another after every line of text.",
+	"author": "Elliot Herriman",
+	"version": "1.0.0",
+	"main": "main.js",
+	"renderer": "renderer.js"
+}
