@@ -26,11 +26,11 @@ app.on('will-finish-launching', function () {
         ProjectWindow.open(path);
         event.preventDefault();
     });
-
 });
 
 let isQuitting = false;
-let theme = "light";
+let theme = ProjectWindow.getViewSettings().theme;
+let zoom = ProjectWindow.getViewSettings().zoom;
 
 app.on('before-quit', function () {
     // We need this to differentiate between pressing quit (which should quit) or closing all windows
@@ -57,23 +57,39 @@ app.on('ready', function () {
 
 	setupMenus();
 
-	let openedSpecificFile = false;
-	if (process.platform == "win32" && process.argv.length > 1) {
-		for (let i = 1; i < process.argv.length; i++) {
-			var arg = process.argv[i].toLowerCase();
-			if (arg.endsWith(".ink")) {
-				var fileToOpen = process.argv[1];
-				ProjectWindow.open(fileToOpen);
-				openedSpecificFile = true;
-				break;
-			}
-		}
-	}
-	if (!openedSpecificFile) {
-		var w = ProjectWindow.createEmpty();
-		//w.openDevTools();
-	}
-	
+    let openedSpecificFile = false;
+    if (process.platform == "win32" && process.argv.length > 1) {
+        for (let i = 1; i < process.argv.length; i++) {
+            var arg = process.argv[i].toLowerCase();
+            if (arg.endsWith(".ink")) {
+                var fileToOpen = process.argv[1];
+                var w = ProjectWindow.open(fileToOpen);
+                openedSpecificFile = true;
+                //Setup last stored zoom
+                if(w) {
+                    w.browserWindow.webContents.once('dom-ready', () => {
+                        ProjectWindow.focused().zoom(zoom);
+                    });
+                }
+                break;
+            }
+        }
+    }
+    if (!openedSpecificFile) {
+        var w = ProjectWindow.createEmpty();
+        //Setup last stored zoom
+        w.browserWindow.webContents.once('dom-ready', () => {
+            ProjectWindow.focused().zoom(zoom);
+			w.browserWindow.send("change-theme", theme);		
+        });
+    }
+
+    // Setup last stored theme
+    AboutWindow.changeTheme(theme);
+    DocumentationWindow.changeTheme(theme);
+
+    // Debug
+    w.openDevTools();	
 });
 
 function finalQuit() {
@@ -82,7 +98,6 @@ function finalQuit() {
 
 forceQuitDetect.onForceQuit(finalQuit);
 electron.app.on("will-quit", finalQuit);
-
 
 function setupMenus(context)
 {
@@ -145,18 +160,26 @@ function setupMenus(context)
           var win = ProjectWindow.focused();
           if (win != null) {
             win.zoom(2);
+            //Convert change from font size to zoom percentage
+            zoom = (parseInt(zoom) + Math.floor(2*100/12)).toString();
+            ProjectWindow.addOrChangeViewSetting('zoom', zoom);
           }
         },
         zoomOut: () => {
           var win = ProjectWindow.focused();
           if (win != null) {
             win.zoom(-2);
+            //Convert change from font size to zoom percentage
+            zoom = (parseInt(zoom) - Math.floor(2*100/12)).toString();
+            ProjectWindow.addOrChangeViewSetting('zoom', zoom);
           }
         },
         zoom: (zoom_percent) => {
           var win = ProjectWindow.focused();
           if (win != null) {
             win.zoom(zoom_percent);
+            zoom = zoom_percent.toString();
+            ProjectWindow.addOrChangeViewSetting('zoom', zoom)
           }
         },
         insertSnippet: (focussedWindow, snippet) => {
@@ -167,8 +190,13 @@ function setupMenus(context)
           theme = newTheme;
           AboutWindow.changeTheme(newTheme);
           DocumentationWindow.changeTheme(newTheme);
+          ProjectWindow.addOrChangeViewSetting('theme', newTheme)
         }
     }, context);
+};
+
+function finalQuit() {
+    Inklecate.killSessions();
 }
 
 ipc.on("update-menus", (event, context) =>

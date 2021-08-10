@@ -26,14 +26,18 @@ const recentFilesPath = path.join(electron.app.getPath("userData"), "recent-file
 
 let onRecentFilesChanged = null;
 
+const veiwSettingsPath = path.join(electron.app.getPath("userData"), "view-settings.json");
+
+let onViewSettingsChanged = null;
+
 function ProjectWindow(filePath) {
-    const getThemeFromMenu = () => Menu.getApplicationMenu().items.find(
-        e => e.label.toLowerCase() === 'view'
-    ).submenu.items.find(
-        e => e.label.toLowerCase() === 'theme'
-    ).submenu.items.find(
-        e => e.checked
-    ).label.toLowerCase();
+    // const getThemeFromMenu = () => Menu.getApplicationMenu().items.find(
+    //     e => e.label.toLowerCase() === 'view'
+    // ).submenu.items.find(
+    //     e => e.label.toLowerCase() === 'theme'
+    // ).submenu.items.find(
+    //     e => e.checked
+    // ).label.toLowerCase();
 
     electronWindowOptions.title = i18n._("Inky");
     this.browserWindow = new BrowserWindow(electronWindowOptions);
@@ -62,10 +66,6 @@ function ProjectWindow(filePath) {
         var idx = windows.indexOf(this);
         if( idx != -1 )
             windows.splice(idx, 1);
-    });
-
-    this.browserWindow.webContents.on('dom-ready', () => {
-        this.browserWindow.send("change-theme", getThemeFromMenu());
     });
 }
 
@@ -197,6 +197,35 @@ ProjectWindow.open = function(filePath) {
         return new ProjectWindow(filePath);
     }
 }
+
+ProjectWindow.setViewSettingsChanged = function(f) {
+    onViewSettingsChanged = f;
+}
+
+ProjectWindow.getViewSettings = function() {
+    if(!fs.existsSync(veiwSettingsPath)) {
+        return { theme:'dark', zoom:'100' };
+    }
+    const json = fs.readFileSync(veiwSettingsPath, "utf-8");
+    try {
+        return JSON.parse(json);
+    } catch(e) {
+        console.error('Error in view settings JSON parsing:', e);
+        return { theme:'dark', zoom:'100' };
+    }
+}
+
+ProjectWindow.addOrChangeViewSetting = function(name, data){
+    const viewSettings = ProjectWindow.getViewSettings();
+    viewSettings[name] = data;
+    fs.writeFileSync(veiwSettingsPath, JSON.stringify(viewSettings), {
+        encoding: "utf-8"
+    });
+    if(onViewSettingsChanged) {
+        onViewSettingsChanged(viewSettings);
+    }
+}
+
 
 ipc.on("main-file-saved", (_, filePath) => {
     addRecentFile(filePath);

@@ -221,6 +221,8 @@ var inkHighlightRules = function() {
             }, {
                 include: "#gather"
             }, {
+                include: "#gather"
+            }, {
                 include: "#comments"
             }, {
                 include: "#logicLineInsert"

@@ -286,6 +286,11 @@ function compile(compileInstruction, requester) {
             else if( jsonResponse.text !== undefined ) {
                 requester.send('play-generated-text', jsonResponse.text, sessionId);
             }
+
+			else if ( jsonResponse["external-function"] !== undefined ) 
+			{
+				requester.send("play-requires-external-function",  jsonResponse['external-function'],  jsonResponse.arguments, sessionId);
+			}
             
             // End of story, but keep process running for debug source lookups
             else if( jsonResponse.end ) {

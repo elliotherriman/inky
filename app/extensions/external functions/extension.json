@@ -1,0 +1,8 @@
+{
+	"name": "Eternal Functions",
+	"description": "Adds external function support to the Inky preview.",
+	"author": "Elliot Herriman",
+	"version": "1.0.0",
+	"main": "main.js",
+	"renderer": "renderer.js"
+}

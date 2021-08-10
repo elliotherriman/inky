@@ -28,7 +28,6 @@ ipc.on("escape-characters", (event) =>
     {   		
 		if (lines[i].trim())
 		{
-			console.log(lines[i])
 			lines[i] = lines[i].replace(/([^\s\w\d])/gi, "\\\$1")	
 		}
 	};

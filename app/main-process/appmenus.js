@@ -10,7 +10,6 @@ const i18n = require('./i18n/i18n.js');
 const extensions = require("../extensions/helpers.js").menu;
 const shell = require('electron').shell;
 const path = require('path');
-// const extensions = require("../extensions/appMenu.js").snippets;
 
 function setupMenus(callbacks, context) {
     let themes = [];

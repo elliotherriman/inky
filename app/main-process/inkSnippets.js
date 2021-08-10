@@ -139,7 +139,61 @@ exports.snippets = [
         ]
     },
 
+    //-------------------
+    // COMMENTS
+    //-------------------
+    {
+        categoryName: "Comments",
+        snippets: [
+            {
+                name: "Single-line comment",
+                ink: "// This line is a comment.\n"
+            }, 
+            {
+                name: "Block comment",
+                ink: "/* ---------------------------------\n"+
+                     "\n" +
+                     "   This whole section is a comment \n"+
+                     "\n" +
+                     " ----------------------------------*/\n"
+            }
+        ]
+    },
+
     {separator: true},
+
+    //-------------------
+    // LIST FUNCTIONS
+    //-------------------
+    {
+        categoryName: "List-handling",
+        snippets: [
+            {
+                name: "List: pop",
+                ink:  loadLongerSnippet("list_pop.ink") 
+            },
+            {
+                name: "List: pop_random",
+                ink:  loadLongerSnippet("list_pop_random.ink") 
+            },
+            {
+                name: "List: list_item_is_member_of",
+                ink:  loadLongerSnippet("list_item_is_member_of.ink") 
+            },
+            {
+                name: "List: list_random_subset",
+                ink:  loadLongerSnippet("list_random_subset.ink") 
+            },
+            {
+                name: "List: list_random_subset_of_size",
+                ink:  loadLongerSnippet("list_random_subset_of_size.ink") 
+            },
+            {
+                name: "List: string_to_list",
+                ink:  loadLongerSnippet("string_to_list.ink") 
+            }
+        ]
+    },
 
     //-------------------
     // USEFUL FUNCTIONS
@@ -175,27 +229,6 @@ exports.snippets = [
             },
             {separator: true},
             {
-                name: "List: pop",
-                ink:  loadLongerSnippet("list_pop.ink") 
-            },
-            {
-                name: "List: pop_random",
-                ink:  loadLongerSnippet("list_pop_random.ink") 
-            },
-            {
-                name: "List: list_random_subset",
-                ink:  loadLongerSnippet("list_random_subset.ink") 
-            },
-            {
-                name: "List: list_random_subset_of_size",
-                ink:  loadLongerSnippet("list_random_subset_of_size.ink") 
-            },
-            {
-                name: "List: string_to_list",
-                ink:  loadLongerSnippet("string_to_list.ink") 
-            },
-            {separator: true},
-            {
                 name: "Printing: UPPERCASE",
                 ink:  loadLongerSnippet("uppercase.ink") 
             },
@@ -224,6 +257,10 @@ exports.snippets = [
     {
         categoryName: "Full stories",
         snippets: [
+            {
+                name: "Pontoon Game (from Overboard!)",
+                ink: loadLongerSnippet("pontoon_example.ink")
+            },
             {
                 name: "The Intercept",
                 ink: loadLongerSnippet("theintercept.ink")
